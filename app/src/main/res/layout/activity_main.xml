@@ -19,10 +19,16 @@
             android:overScrollMode="never" />
 
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5px"
+            android:background="@color/colorGraySecondary"
+            />
         <com.android.zd112.view.TabContainerView
             android:id="@+id/ll_tab_container"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary" />
+            android:layout_height="40dp"
+            android:background="@color/colorWhite"
+            />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

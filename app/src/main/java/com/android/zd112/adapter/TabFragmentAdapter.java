@@ -9,7 +9,7 @@ import android.view.ViewGroup;
  * Created by etongdai on 2017/11/17.
  */
 
-public class TabFragmentAdapter extends FragmentPagerAdapter{
+public class TabFragmentAdapter extends FragmentPagerAdapter {
     private Fragment[] fragments;
 
     public TabFragmentAdapter(FragmentManager fm, Fragment[] fragments) {

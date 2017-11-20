@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import com.android.zd112.R;
 
 /**
- * Created by etongdai on 2017/11/17.
+ * Created by etongdai on 2017/11/20.
  */
 
-public class HomeFragment extends BaseFragment{
+public class FindFragment extends BaseFragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment_home,container,false);
+        return inflater.inflate(R.layout.tab_fragment_find,container,false);
     }
 }

@@ -2,8 +2,19 @@
     <string name="app_name">zd112</string>
 
     <array name="tab_main_title">
-        <item>首页</item>
+        <item>文化</item>
+        <item>圈子</item>
+        <item>发现</item>
         <item>我的</item>
-        <item>更多</item>
     </array>
+
+    <string name="calendar_Wes">周三</string>
+    <string name="nowday">今天</string>
+    <string name="calendar_Sat">周六</string>
+    <string name="calendar_Fri">周五</string>
+    <string name="calendar_Thus">周四</string>
+    <string name="calendar_Tus">周二</string>
+    <string name="calendar_Mon">周一</string>
+    <string name="access_fail">访问失败</string>
+    <string name="month">月</string>
 </resources>

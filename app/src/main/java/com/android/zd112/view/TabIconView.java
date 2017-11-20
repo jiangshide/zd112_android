@@ -7,24 +7,36 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
 /**
  * Created by etongdai on 2017/11/17.
  */
 
-public class TabIconView extends android.support.v7.widget.AppCompatImageView{
-    /** 改变透明度 */
+public class TabIconView extends android.support.v7.widget.AppCompatImageView {
+    /**
+     * 改变透明度
+     */
     private Paint mPaint;
-    /** focus下bitmap*/
+    /**
+     * focus下bitmap
+     */
     private Bitmap mSelectedIcon;
-    /** normal下bitmap*/
+    /**
+     * normal下bitmap
+     */
     private Bitmap mNormalIcon;
-    /** focus bitmap矩阵*/
+    /**
+     * focus bitmap矩阵
+     */
     private Rect mSelectedRect;
-    /** normal bitmap矩阵*/
+    /**
+     * normal bitmap矩阵
+     */
     private Rect mNormalRect;
-    /** 当前选择项(mSelectedIcon)透明度
-     * <p><b> mNormalIcon</b> 透明度即为 255 - mSelectedAlpha</p> */
+    /**
+     * 当前选择项(mSelectedIcon)透明度
+     * <p><b> mNormalIcon</b> 透明度即为 255 - mSelectedAlpha</p>
+     */
     private int mSelectedAlpha = 0;
 
     public TabIconView(Context context) {
@@ -41,7 +53,8 @@ public class TabIconView extends android.support.v7.widget.AppCompatImageView{
 
     /**
      * 初始化资源图片bitmap及相关绘制对象
-     * @param normal normals
+     *
+     * @param normal   normals
      * @param selected focus
      */
     public final void init(int normal, int selected, int width, int height) {
@@ -70,6 +83,7 @@ public class TabIconView extends android.support.v7.widget.AppCompatImageView{
 
     /**
      * 改变透明度值
+     *
      * @param alpha 透明度
      */
     public final void changeSelectedAlpha(int alpha) {
@@ -79,6 +93,7 @@ public class TabIconView extends android.support.v7.widget.AppCompatImageView{
 
     /**
      * 改变透明度百分比
+     *
      * @param offset 百分比
      */
     public final void offsetChanged(float offset) {

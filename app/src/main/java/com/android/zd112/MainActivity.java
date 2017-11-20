@@ -8,8 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.zd112.adapter.TabFragmentAdapter;
+import com.android.zd112.fragment.FindFragment;
 import com.android.zd112.fragment.HomeFragment;
-import com.android.zd112.fragment.MessageFragment;
+import com.android.zd112.fragment.CircleFragment;
 import com.android.zd112.fragment.MineFragment;
 import com.android.zd112.view.TabContainerView;
 
@@ -34,17 +35,21 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
      */
     private final int ICONS_RES[][] = {
             {
-                    R.mipmap.ic_home_normal,
-                    R.mipmap.ic_home_focus
+                    R.mipmap.tab_home,
+                    R.mipmap.tab_home_selected
             },
             {
-                    R.mipmap.ic_message_normal,
-                    R.mipmap.ic_message_focus
+                    R.mipmap.tab_project,
+                    R.mipmap.tab_project_selected
+            },
+            {
+                    R.mipmap.tab_mine,
+                    R.mipmap.tab_mine_selected
             },
 
             {
-                    R.mipmap.ic_mine_normal,
-                    R.mipmap.ic_mine_focus
+                    R.mipmap.tab_more,
+                    R.mipmap.tab_more_selected
             }
     };
 
@@ -57,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private Fragment[] fragments = {
             new HomeFragment(),
-            new MessageFragment(),
+            new CircleFragment(),
+            new FindFragment(),
             new MineFragment()
     };
 
@@ -85,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         int width = getResources().getDimensionPixelSize(R.dimen.tab_icon_width);
         int height = getResources().getDimensionPixelSize(R.dimen.tab_icon_height);
         mTabLayout.setContainerLayout(R.layout.tab_container_view, R.id.iv_tab_icon, R.id.tv_tab_text, width, height);
-//        mTabLayout.setSingleTextLayout(R.layout.tab_container_view, R.id.tv_tab_text);
-//        mTabLayout.setSingleIconLayout(R.layout.tab_container_view, R.id.iv_tab_icon);
 
         mTabLayout.setViewPager(mPager);
 
