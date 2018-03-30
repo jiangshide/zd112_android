@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">zd112</string>
 
-    <array name="tab_main_title">
-        <item>文化</item>
-        <item>圈子</item>
-        <item>发现</item>
-        <item>我的</item>
-    </array>
+    <string name="tips_not_wifi">You are currently using the mobile network, the player will continue to consume traffic</string>
+    <string name="tips_not_wifi_confirm">Resume</string>
+    <string name="tips_not_wifi_cancel">Stop play</string>
+    <string name="no_url">No url</string>
+    <string name="replay">Replay</string>
+    <string name="video_loading_faild">Video loading failed</string>
+    <string name="click_to_restart">Click to try again</string>
 
     <string name="calendar_Wes">周三</string>
     <string name="nowday">今天</string>
@@ -17,4 +18,11 @@
     <string name="calendar_Mon">周一</string>
     <string name="access_fail">访问失败</string>
     <string name="month">月</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <string name="marqueeTxt">新文章已更新,请及时关注:1.2018年关于遂改心跳贵已上线,2.社保机制改革在即,两大新制度升级,3.北京天气再报,出新请及时关注...</string>
+
+
 </resources>

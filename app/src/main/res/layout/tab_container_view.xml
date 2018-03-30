@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null"
     android:gravity="center"
-    android:background="@null">
+    >
 
-    <com.android.zd112.view.TabIconView
+    <com.android.zd112.ui.view.TabIconView
         android:id="@+id/iv_tab_icon"
-        android:layout_marginTop="3dp"
-        android:layout_width="@dimen/tab_icon_width"
-        android:layout_height="@dimen/tab_icon_height"
+        android:layout_width="25dp"
+        android:layout_height="22dp"
         android:layout_centerHorizontal="true"
         android:scaleType="centerInside" />
 
@@ -17,11 +17,10 @@
         android:id="@+id/tv_tab_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/iv_tab_icon"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
         android:textColor="@color/main_bottom_tab_textcolor_normal"
-        android:textSize="12.5sp" />
-
+        android:textSize="10sp" />
 </RelativeLayout>
 

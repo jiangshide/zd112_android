@@ -123,7 +123,7 @@
 
     </LinearLayout>
 
-    <com.android.zd112.view.CalendarView
+    <com.android.zd112.ui.view.CalendarView
         android:id="@+id/calendar_viewpager"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

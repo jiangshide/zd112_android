@@ -24,7 +24,7 @@
 #--- the glide start---#
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
@@ -33,3 +33,27 @@
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #--- the glide end ---#
 
+
+#--  the retrofit2 start ---#
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain service method parameters.
+-keepclassmembernames,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+#--  the retrofit2 end ---#
+
+#superplayer
+-keep class com.supercwn.player.** {*; }
+-keep class tv.danmaku.ijk.media.player.** {*; }
+-keep class tv.danmaku.ijk.media.player.IjkMediaPlayer{
+*;
+}
+-keep class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{
+*;
+}
+-keep class com.superplayer.library.** {*;}
+
+-keep class om.scwang.smartrefresh.** {*;}

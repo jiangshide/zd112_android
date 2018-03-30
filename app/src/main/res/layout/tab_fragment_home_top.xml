@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:id="@+id/homeWeatherImg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/weather" />
+
+        <TextView
+            android:id="@+id/homeWeatherTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/homeWeatherImg"
+            android:text="4℃"
+            android:textColor="@color/colorWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/homeLocationTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/homeWeatherImg"
+            android:text="北京"
+            android:textColor="@color/colorWhite"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/homeLocationImg"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/homeLocationTxt"
+            android:src="@mipmap/arrow_down" />
+
+        <TextView
+            android:id="@+id/homeSearchTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/homeQRImg"
+            android:layout_toRightOf="@+id/homeLocationImg"
+            android:background="@drawable/dialog_radius"
+            android:drawableLeft="@mipmap/search"
+            android:drawablePadding="5dp"
+            android:padding="5dp"
+            android:text="文化圈"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/homeQRImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/qr" />
+
+    </RelativeLayout>
+
+    <com.android.zd112.ui.view.BannerView
+        android:id="@+id/homeBanner"
+        android:layout_width="match_parent"
+        android:layout_height="180dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_pressed">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:paddingLeft="5dp"
+            android:paddingRight="3dp"
+            android:text="公告:"
+            android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/marqueeTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textColorSecondary" />
+
+    <com.android.zd112.ui.view.MyGridView
+        android:id="@+id/homeToolList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:numColumns="5" />
+</LinearLayout>

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#67120E</color>
+    <color name="colorPrimaryDark">#861B14</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="circle_normal">#D8E9FC</color>
     <color name="circle_press">#025FCC</color>
 
     <color name="red">#f35b42</color>
+    <color name="redLight">#FFB5C5</color>
 
     <color name="textColorPrimary">#333333</color>
     <color name="textColorSecondary">#999999</color>
@@ -24,4 +25,22 @@
 
     <color name="normal_color">#0093fe</color>
     <color name="blue">#A5C3EB</color>
+2
+    <color name="background">#2a7eca</color>
+    <color name="finish">#28e0ce</color>
+    <color name="black">#000000</color>
+
+    <color name="alpha">#00000000</color>
+
+
+    <color name="maincolor">#e0eeee</color>
+    <color name="green">#31C27C</color>
+    <color name="gray_white">#99ffffff</color>
+    <color name="title">#D1EEEE</color>
+
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="dialog_text">#181818</color>
+    <color name="dialog_divider">#d1d1d1</color>
+
+    <drawable name="pagerViewColor">@color/colorAccent</drawable>
 </resources>

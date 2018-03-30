@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.zd112.MainActivity">
+    android:background="@null"
+    tools:context="com.android.zd112.ui.MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@null"
         android:orientation="vertical">
 
         <android.support.v4.view.ViewPager
@@ -18,17 +19,17 @@
             android:layout_weight="1"
             android:overScrollMode="never" />
 
-
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5px"
-            android:background="@color/colorGraySecondary"
-            />
-        <com.android.zd112.view.TabContainerView
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="3dp"
+            android:background="@color/colorGraySecondary" />
+
+        <com.android.zd112.ui.view.TabContainerView
             android:id="@+id/ll_tab_container"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorWhite"
-            />
+            android:layout_height="wrap_content"
+            android:background="@color/alpha"
+            android:gravity="bottom" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
