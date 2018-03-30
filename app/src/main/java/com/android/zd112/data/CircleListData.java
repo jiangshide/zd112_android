@@ -5,4 +5,7 @@ package com.android.zd112.data;
  */
 
 public class CircleListData {
+    public String name;
+    public String url;
+    public String thumb;
 }

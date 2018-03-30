@@ -1,7 +1,7 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
-import android.media.MediaPlayer;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.view.Surface;
 
 import java.lang.reflect.Method;

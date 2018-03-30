@@ -1,4 +1,4 @@
-package com.zd112.qrcode.codec;
+package com.android.zd112.ui.view.qrcode.codec;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

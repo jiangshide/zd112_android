@@ -1,4 +1,4 @@
-package com.android.zd112.view.calendar;
+package com.android.zd112.ui.view.calendar;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

@@ -1,13 +1,24 @@
 package com.android.zd112.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ConstellationActivity extends AppCompatActivity {
+import com.android.zd112.R;
+
+public class ConstellationActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_constellation);
+    protected void initView(Bundle savedInstanceState) {
+        setView(R.layout.activity_constellation);
+        topView("星座");
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+
     }
 }

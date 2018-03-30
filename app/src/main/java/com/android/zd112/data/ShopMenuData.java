@@ -5,4 +5,7 @@ package com.android.zd112.data;
  */
 
 public class ShopMenuData {
+    public String name;
+    public int icon;
+    public String url;
 }

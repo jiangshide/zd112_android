@@ -1,4 +1,4 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.zd112.R;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedHashMap;
@@ -167,7 +169,7 @@ public abstract class VideoPlayer extends FrameLayout implements View.OnClickLis
             Constructor<VideoPlayer> constructor = _class.getConstructor(Context.class);
             final VideoPlayer jzVideoPlayer = constructor.newInstance(context);
             jzVideoPlayer.setId(R.id.fullscreen_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            LayoutParams lp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vp.addView(jzVideoPlayer, lp);
 //            final Animation ra = AnimationUtils.loadAnimation(context, R.anim.start_fullscreen);
@@ -803,8 +805,8 @@ public abstract class VideoPlayer extends FrameLayout implements View.OnClickLis
 
     public void addTextureView() {
         Log.d(TAG, "addTextureView [" + this.hashCode() + "] ");
-        FrameLayout.LayoutParams layoutParams =
-                new FrameLayout.LayoutParams(
+        LayoutParams layoutParams =
+                new LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         Gravity.CENTER);
@@ -977,7 +979,7 @@ public abstract class VideoPlayer extends FrameLayout implements View.OnClickLis
             Constructor<VideoPlayer> constructor = (Constructor<VideoPlayer>) VideoPlayer.this.getClass().getConstructor(Context.class);
             VideoPlayer jzVideoPlayer = constructor.newInstance(getContext());
             jzVideoPlayer.setId(R.id.fullscreen_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            LayoutParams lp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vp.addView(jzVideoPlayer, lp);
             jzVideoPlayer.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -1017,7 +1019,7 @@ public abstract class VideoPlayer extends FrameLayout implements View.OnClickLis
             Constructor<VideoPlayer> constructor = (Constructor<VideoPlayer>) VideoPlayer.this.getClass().getConstructor(Context.class);
             VideoPlayer jzVideoPlayer = constructor.newInstance(getContext());
             jzVideoPlayer.setId(R.id.tiny_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(400, 400);
+            LayoutParams lp = new LayoutParams(400, 400);
             lp.gravity = Gravity.RIGHT | Gravity.BOTTOM;
             vp.addView(jzVideoPlayer, lp);
             jzVideoPlayer.setUp(dataSourceObjects, currentUrlMapIndex, VideoPlayerNormal.SCREEN_WINDOW_TINY, objects);

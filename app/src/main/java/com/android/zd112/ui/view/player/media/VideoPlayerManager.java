@@ -1,4 +1,4 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
 /**
  * Created by etongdai on 2018/3/20.

@@ -1,16 +1,15 @@
-package cn.qqtheme.androidpicker;
+package com.android.zd112.ui.view.picker;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.alibaba.fastjson.JSON;
+import com.android.zd112.ui.view.picker.entity.Province;
+import com.android.zd112.utils.ConvertUtils;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
-
-import cn.qqtheme.framework.entity.Province;
-import cn.qqtheme.framework.picker.AddressPicker;
-import cn.qqtheme.framework.util.ConvertUtils;
+import java.util.Collection;
 
 public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>> {
     private Activity activity;// TODO: 2018/2/1 StaticFieldLeak
@@ -64,7 +63,8 @@ public class AddressPickTask extends AsyncTask<String, Void, ArrayList<Province>
         ArrayList<Province> data = new ArrayList<>();
         try {
             String json = ConvertUtils.toString(activity.getAssets().open("city.json"));
-            data.addAll(JSON.parseArray(json, Province.class));
+//            data.addAll(JSON.parseArray(json, Province.class));
+            data.addAll((Collection<? extends Province>) new Gson().fromJson(json, Province.class));
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }

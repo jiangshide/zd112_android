@@ -1,4 +1,4 @@
-package com.zd112.qrcode.core;
+package com.android.zd112.ui.view.qrcode.core;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -18,7 +18,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.zd112.qrcode.R;
+import com.android.zd112.R;
 
 /**
  * Created by etongdai on 2018/2/24.

@@ -1,4 +1,4 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.zd112.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -317,7 +319,7 @@ public class VideoPlayerNormal extends VideoPlayer {
             clarityPopWindow = new PopupWindow(layout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
             clarityPopWindow.setContentView(layout);
             clarityPopWindow.showAsDropDown(clarity);
-            layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            layout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             clarityPopWindow.update(clarity, -40, 46, Math.round(layout.getMeasuredWidth() * 2), layout.getMeasuredHeight());
         } else if (i == R.id.retry_btn) {
             if (dataSourceObjects == null || Utils.getCurrentFromDataSource(dataSourceObjects, currentUrlMapIndex) == null) {

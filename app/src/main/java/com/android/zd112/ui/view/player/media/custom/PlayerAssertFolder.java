@@ -1,13 +1,13 @@
-package com.zd112.media.custom;
+package com.android.zd112.ui.view.player.media.custom;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.Surface;
 
-import com.zd112.media.MediaInterface;
-import com.zd112.media.MediaManager;
-import com.zd112.media.VideoPlayerManager;
+import com.android.zd112.ui.view.player.media.MediaInterface;
+import com.android.zd112.ui.view.player.media.MediaManager;
+import com.android.zd112.ui.view.player.media.VideoPlayerManager;
 
 /**
  * Created by etongdai on 2018/3/20.

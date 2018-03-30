@@ -5,4 +5,6 @@ package com.android.zd112.data;
  */
 
 public class ShopData {
+    public String name;
+    public int icon;
 }

@@ -1,15 +1,15 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.view.TextureView;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Surface;
+import android.view.TextureView;
 
 /**
  * Created by etongdai on 2018/3/20.

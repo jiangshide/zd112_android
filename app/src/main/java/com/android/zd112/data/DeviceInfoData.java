@@ -5,4 +5,5 @@ package com.android.zd112.data;
  */
 
 public class DeviceInfoData {
+    
 }

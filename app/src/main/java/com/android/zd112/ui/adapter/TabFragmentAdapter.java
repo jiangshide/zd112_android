@@ -1,4 +1,4 @@
-package com.android.zd112.adapter;
+package com.android.zd112.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

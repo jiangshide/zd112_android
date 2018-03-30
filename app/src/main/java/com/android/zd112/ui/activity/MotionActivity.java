@@ -1,13 +1,24 @@
 package com.android.zd112.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MotionActivity extends AppCompatActivity {
+import com.android.zd112.R;
+
+public class MotionActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_motion);
+    protected void initView(Bundle savedInstanceState) {
+        setView(R.layout.activity_motion);
+        topView("运动");
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+
     }
 }

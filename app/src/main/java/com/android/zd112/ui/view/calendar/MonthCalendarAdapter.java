@@ -1,7 +1,8 @@
-package com.android.zd112.view.calendar;
+package com.android.zd112.ui.view.calendar;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -208,7 +209,7 @@ public class MonthCalendarAdapter extends CalendarAdapter{
                                 }
                             }
                         }
-                        Animator anim = AnimatorInflater.loadAnimator(mContext, R.anim.scale);
+                        @SuppressLint("ResourceType") Animator anim = AnimatorInflater.loadAnimator(mContext, R.anim.scale);
                         dayOfWeek.invalidate();
                         anim.setTarget(dayOfWeek);
                         anim.start();

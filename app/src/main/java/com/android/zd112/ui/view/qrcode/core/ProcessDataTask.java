@@ -1,4 +1,4 @@
-package com.zd112.qrcode.core;
+package com.android.zd112.ui.view.qrcode.core;
 
 import android.hardware.Camera;
 import android.os.AsyncTask;

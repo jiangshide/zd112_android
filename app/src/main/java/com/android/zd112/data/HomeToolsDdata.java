@@ -5,4 +5,8 @@ package com.android.zd112.data;
  */
 
 public class HomeToolsDdata {
+    public Class _class;
+    public String name;
+    public int icon;
+    public String url;
 }

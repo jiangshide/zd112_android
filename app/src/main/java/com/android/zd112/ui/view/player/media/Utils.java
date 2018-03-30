@@ -1,4 +1,4 @@
-package com.zd112.media;
+package com.android.zd112.ui.view.player.media;
 
 import android.app.Activity;
 import android.content.Context;
