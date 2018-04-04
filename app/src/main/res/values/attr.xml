@@ -17,6 +17,13 @@
         <item>运动</item>
     </array>
 
+    <array name="letter">
+        <item>定位</item>
+        <item>最近</item>
+        <item>热门</item>
+        <item>全部</item>
+    </array>
+
     <array name="tab_main_colors">
         <item>@color/main_bottom_tab_textcolor_normal</item>
         <item>@color/colorPrimaryDark</item>

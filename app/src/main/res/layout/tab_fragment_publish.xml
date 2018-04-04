@@ -4,8 +4,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.android.zd112.ui.view.qrcode.core.CameraPreview
-        android:id="@+id/camera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

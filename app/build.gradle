@@ -43,9 +43,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled true
-            shrinkResources true
+            shrinkResources false
             pseudoLocalesEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.zd112
@@ -82,8 +82,8 @@ dependencies {
 //    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
+//    compile 'com.scwang.smartrefresh:SmartRefdreshLayout:1.0.5.1'
+//    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     implementation 'pub.devrel:easypermissions:1.0.1'
     //没有使用特殊Header，可以不加这行
     //    compile 'com.amap.api:3dmap:latest.integration'//3D地图

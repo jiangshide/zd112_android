@@ -107,4 +107,13 @@
         <item name="android:windowEnterAnimation">@anim/anim_left_in</item>
         <item name="android:windowExitAnimation">@anim/anim_left_out</item>
     </style>
+
+    <!-- the refresh start -->
+    <declare-styleable name="RefreshLoadLayout">
+        <attr name="refreshingEnabled" format="boolean"/>
+        <attr name="loadingEnabled" format="boolean"/>
+        <attr name="triggerDistance" format="dimension"/>
+        <attr name="scrollDownAfterLoading" format="boolean"/>
+    </declare-styleable>
+    <!-- the refresh end -->
 </resources>

@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.android.zd112.R;
 import com.android.zd112.utils.CameraUtils;
+import com.android.zd112.utils.DeviceUtils;
 
 public class TorchActivity extends BaseActivity {
 
@@ -35,7 +36,15 @@ public class TorchActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        isOpen = isOpen ? true : false;
+        if(isOpen){
+            torchBtn.setText("关闭");
+            isOpen = false;
+        }else{
+            torchBtn.setText("打开");
+            isOpen = true;
+        }
         CameraUtils.light(this, isOpen);
+        DeviceUtils.notification(this,MotionActivity.class,1,"2018","2018新年好!");
+        show("----show");
     }
 }

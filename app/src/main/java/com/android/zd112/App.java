@@ -2,24 +2,14 @@ package com.android.zd112;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 
 import com.android.zd112.data.net.NetApi;
 import com.android.zd112.utils.Constant;
 import com.android.zd112.utils.ErrorLog;
 import com.android.zd112.utils.LogUtils;
-import com.scwang.smartrefresh.header.BezierCircleHeader;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by etongdai on 2018/1/23.
  */
 
-public class App extends Application implements Application.ActivityLifecycleCallbacks,ErrorLog.ExeceptionHandler{
+public class App extends Application implements Application.ActivityLifecycleCallbacks, ErrorLog.ExeceptionHandler {
 
     private static App mInstance;
     private NetApi mNetApi;
@@ -53,24 +43,6 @@ public class App extends Application implements Application.ActivityLifecycleCal
 
     public NetApi getmNetApi() {
         return mNetApi;
-    }
-
-    static {
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @NonNull
-            @Override
-            public RefreshHeader createRefreshHeader(@NonNull Context context, @NonNull RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.colorPrimary, R.color.colorWhite);
-                return new BezierCircleHeader(context);
-            }
-        });
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @NonNull
-            @Override
-            public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
-                return new ClassicsFooter(context).setDrawableSize(20);
-            }
-        });
     }
 
     @Override

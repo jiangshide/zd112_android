@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refreshLayout"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.android.zd112.ui.view.refresh.RefreshLoadLayout
+        android:id="@+id/homeRefreshView"
+        app:refreshingEnabled="true"
+        app:loadingEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,5 +16,5 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="6" />
-    </android.support.constraint.ConstraintLayout>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </com.android.zd112.ui.view.refresh.RefreshLoadLayout>
+</android.support.constraint.ConstraintLayout>

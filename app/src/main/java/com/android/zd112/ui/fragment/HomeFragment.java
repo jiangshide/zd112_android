@@ -1,6 +1,7 @@
 package com.android.zd112.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -29,15 +30,14 @@ import com.android.zd112.ui.activity.ZodiacActivity;
 import com.android.zd112.ui.adapter.CommAdapter;
 import com.android.zd112.ui.view.BannerView;
 import com.android.zd112.ui.view.MyGridView;
+import com.android.zd112.ui.view.refresh.MaterialIndicator;
+import com.android.zd112.ui.view.refresh.RefreshLoadLayout;
 import com.android.zd112.utils.BadgeUtils;
 import com.android.zd112.utils.Constant;
 import com.android.zd112.utils.LocationUtils;
 import com.android.zd112.utils.LogUtils;
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,14 +52,14 @@ import retrofit2.Response;
  * Created by etongdai on 2017/11/17.
  */
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener, Callback<HomeData>, OnRefreshListener, OnLoadMoreListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener, Callback<HomeData>, RefreshLoadLayout.LoadingHandler {
 
 
-    private RefreshLayout refreshLayout;
     private ImageView homeWeatherImg, homeQRImg;
     private TextView homeWeatherTxt, homeLocationTxt, homeSearchTxt, marqueeTxt;
     private BannerView homeBanner;
 
+    private RefreshLoadLayout homeRefreshView;
     private MyGridView homeToolList;
     private ListView homeList;
 
@@ -69,8 +69,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     protected void initView(Bundle savedInstanceState) {
         setView(R.layout.tab_fragment_home);
-        refreshLayout = viewId(R.id.refreshLayout);
-
+        homeRefreshView = viewId(R.id.homeRefreshView);
         homeList = viewId(R.id.homeList);
 
         View headView = LayoutInflater.from(getActivity()).inflate(R.layout.tab_fragment_home_top, null);
@@ -92,7 +91,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     protected void setListener() {
-        refreshLayout.setOnRefreshListener(this);
+        homeRefreshView.setOnRefreshListener(this);
+        homeRefreshView.setLoadingEnabled(true);
+        MaterialIndicator materialIndicator = new MaterialIndicator(getActivity());
+        materialIndicator.getProgressView().setColorSchemeColors(Color.RED, Color.YELLOW);
+        homeRefreshView.setRefreshIndicator(materialIndicator);
+        homeRefreshView.setLoadingIndicator(new MaterialIndicator(getActivity()));
+        homeRefreshView.setLoadingHandler(this);
         homeLocationTxt.setOnClickListener(this);
         homeSearchTxt.setOnClickListener(this);
         homeQRImg.setOnClickListener(this);
@@ -136,6 +141,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onRefresh() {
+        super.onRefresh();
+        homeRefreshView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                homeRefreshView.endRefreshing();
+            }
+        }, 2000);
+    }
+
+    @Override
     protected void processLogic(Bundle savedInstanceState) {
         mNetApi.getHomeData().enqueue(this);
         setBannerUrl();
@@ -176,7 +192,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         HomeData homeData = response.body();
         LogUtils.e("----------homeData:", homeData.version);
         setBannerUrl();
-        refreshLayout.finishRefresh(true);
     }
 
     public void setBannerUrl() {
@@ -224,7 +239,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void onFailure(Call<HomeData> call, Throwable t) {
         LogUtils.e("------------onFailure");
-        refreshLayout.finishRefresh(false);
     }
 
     @Override
@@ -246,13 +260,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     @Override
-    public void onRefresh(RefreshLayout refreshLayout) {
-        mNetApi.getHomeData().enqueue(this);
-        refreshLayout.finishRefresh();
+    public boolean canLoadMore() {
+        return homeList.getCount() < 20;
     }
 
     @Override
-    public void onLoadMore(RefreshLayout refreshLayout) {
-        refreshLayout.finishLoadMore();
+    public void onLoading() {
+        homeRefreshView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                homeRefreshView.endRefreshing();
+            }
+        }, 2000);
     }
 }

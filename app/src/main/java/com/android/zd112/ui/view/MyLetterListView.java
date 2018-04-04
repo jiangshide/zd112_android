@@ -12,11 +12,11 @@ import android.view.View;
  * Created by etongdai on 2018/3/7.
  */
 
-public class MyLetterListView extends View{
+public class MyLetterListView extends View {
     OnTouchingLetterChangedListener onTouchingLetterChangedListener;
-    String[] b = {"定位", "最近", "热门", "全部", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+    private String[] mLetter = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
             "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-            "Y", "Z" };
+            "Y", "Z"};
     int choose = -1;
     Paint paint = new Paint();
     boolean showBkg = false;
@@ -41,8 +41,8 @@ public class MyLetterListView extends View{
         }
         int height = getHeight();
         int width = getWidth();
-        int singleHeight = height / b.length;
-        for (int i = 0; i < b.length; i++) {
+        int singleHeight = height / mLetter.length;
+        for (int i = 0; i < mLetter.length; i++) {
             paint.setColor(Color.parseColor("#8c8c8c"));
             paint.setTextSize(26);
             // paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -51,11 +51,21 @@ public class MyLetterListView extends View{
 				paint.setColor(Color.parseColor("#3399ff"));
 				paint.setFakeBoldText(true);
 			}*/
-            float xPos = width / 2 - paint.measureText(b[i]) / 2;
+            float xPos = width / 2 - paint.measureText(mLetter[i]) / 2;
             float yPos = singleHeight * i + singleHeight;
-            canvas.drawText(b[i], xPos, yPos, paint);
+            canvas.drawText(mLetter[i], xPos, yPos, paint);
             paint.reset();
         }
+    }
+
+    public void setLetter(String[] letter) {
+        int mLetterSize = mLetter.length;
+        int letterSize = letter.length;
+        String[] temp = new String[mLetterSize + letterSize];
+        System.arraycopy(letter, 0, temp, 0, letterSize);
+        System.arraycopy(mLetter, 0, temp, letterSize, mLetterSize);
+        mLetter = temp;
+        this.invalidate();
     }
 
     @Override
@@ -64,13 +74,13 @@ public class MyLetterListView extends View{
         final float y = event.getY();
         final int oldChoose = choose;
         final OnTouchingLetterChangedListener listener = onTouchingLetterChangedListener;
-        final int c = (int) (y / getHeight() * b.length);
+        final int c = (int) (y / getHeight() * mLetter.length);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 showBkg = true;
                 if (oldChoose != c && listener != null) {
-                    if (c >= 0 && c < b.length) {
-                        listener.onTouchingLetterChanged(b[c]);
+                    if (c >= 0 && c < mLetter.length) {
+                        listener.onTouchingLetterChanged(mLetter[c]);
                         choose = c;
                         invalidate();
                     }
@@ -78,8 +88,8 @@ public class MyLetterListView extends View{
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (oldChoose != c && listener != null) {
-                    if (c >= 0 && c < b.length) {
-                        listener.onTouchingLetterChanged(b[c]);
+                    if (c >= 0 && c < mLetter.length) {
+                        listener.onTouchingLetterChanged(mLetter[c]);
                         choose = c;
                         invalidate();
                     }

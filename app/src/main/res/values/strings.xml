@@ -22,6 +22,12 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
+
+    <string name="pull_down_refresh">下拉刷新</string>
+    <string name="release_refresh">释放更新</string>
+    <string name="on_loading">加载中…</string>
+    <string name="no_more_content">没有更多内容了</string>
+
     <string name="marqueeTxt">新文章已更新,请及时关注:1.2018年关于遂改心跳贵已上线,2.社保机制改革在即,两大新制度升级,3.北京天气再报,出新请及时关注...</string>
 
 

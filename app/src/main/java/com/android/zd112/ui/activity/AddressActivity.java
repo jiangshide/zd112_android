@@ -7,7 +7,6 @@ import android.graphics.PixelFormat;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -29,6 +28,7 @@ import com.android.zd112.R;
 import com.android.zd112.data.City;
 import com.android.zd112.data.db.DBHelper;
 import com.android.zd112.data.db.DatabaseHelper;
+import com.android.zd112.ui.adapter.CommAdapter;
 import com.android.zd112.ui.view.MyLetterListView;
 import com.android.zd112.utils.FileUtils;
 import com.android.zd112.utils.LocationUtils;
@@ -44,10 +44,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class AddressActivity extends AppCompatActivity implements AbsListView.OnScrollListener {
+public class AddressActivity extends BaseActivity implements AbsListView.OnScrollListener {
 
     private BaseAdapter adapter;
-    private ResultListAdapter resultListAdapter;
+    private CommAdapter<City> resultListAdapter;
     private ListView personList;
     private ListView resultList;
     private TextView overlay;
@@ -121,6 +121,7 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
             }
         });
         letterListView = (MyLetterListView) findViewById(R.id.MyLetterListView01);
+        letterListView.setLetter(getResStringArr(R.array.letter));
         letterListView
                 .setOnTouchingLetterChangedListener(new LetterListViewListener());
         alphaIndexer = new HashMap<String, Integer>();
@@ -143,8 +144,12 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
         locateProcess = 1;
         personList.setAdapter(adapter);
         personList.setOnScrollListener(this);
-        resultListAdapter = new ResultListAdapter(this, city_result);
-        resultList.setAdapter(resultListAdapter);
+        resultList.setAdapter(resultListAdapter = new CommAdapter<City>(this, city_result, R.layout.list_item) {
+            @Override
+            protected void convertView(int position, View item, City city) {
+                ((TextView)get(item,R.id.name)).setText(city.name);
+            }
+        });
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -186,6 +191,21 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
                 }
             }
         });
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+
     }
 
     public void InsertCity(String name) {
@@ -324,50 +344,50 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
         personList.setAdapter(adapter);
     }
 
-    private class ResultListAdapter extends BaseAdapter {
-        private LayoutInflater inflater;
-        private ArrayList<City> results = new ArrayList<City>();
-
-        public ResultListAdapter(Context context, ArrayList<City> results) {
-            inflater = LayoutInflater.from(context);
-            this.results = results;
-        }
-
-        @Override
-        public int getCount() {
-            return results.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.list_item, null);
-                viewHolder = new ViewHolder();
-                viewHolder.name = (TextView) convertView
-                        .findViewById(R.id.name);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            viewHolder.name.setText(results.get(position).getName());
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView name;
-        }
-    }
+//    private class ResultListAdapter extends BaseAdapter {
+//        private LayoutInflater inflater;
+//        private ArrayList<City> results = new ArrayList<City>();
+//
+//        public ResultListAdapter(Context context, ArrayList<City> results) {
+//            inflater = LayoutInflater.from(context);
+//            this.results = results;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return results.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            ViewHolder viewHolder = null;
+//            if (convertView == null) {
+//                convertView = inflater.inflate(R.layout.list_item, null);
+//                viewHolder = new ViewHolder();
+//                viewHolder.name = (TextView) convertView
+//                        .findViewById(R.id.name);
+//                convertView.setTag(viewHolder);
+//            } else {
+//                viewHolder = (ViewHolder) convertView.getTag();
+//            }
+//            viewHolder.name.setText(results.get(position).getName());
+//            return convertView;
+//        }
+//
+//        class ViewHolder {
+//            TextView name;
+//        }
+//    }
 
     public class ListAdapter extends BaseAdapter {
         private Context context;
@@ -475,7 +495,12 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
                 GridView rencentCity = (GridView) convertView
                         .findViewById(R.id.recent_city);
                 rencentCity
-                        .setAdapter(new HitCityAdapter(context, this.hisCity));
+                        .setAdapter(new CommAdapter<String>(context, this.hisCity, R.layout.item_city) {
+                            @Override
+                            protected void convertView(int position, View item, String s) {
+                                ((TextView) get(item, R.id.city)).setText(s);
+                            }
+                        });
                 rencentCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
@@ -507,7 +532,12 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
 
                     }
                 });
-                hotCity.setAdapter(new HotCityAdapter(context, this.hotList));
+                hotCity.setAdapter(new CommAdapter<City>(context, this.hotList, R.layout.item_city) {
+                    @Override
+                    protected void convertView(int position, View item, City city) {
+                        ((TextView) get(item, R.id.city)).setText(city.name);
+                    }
+                });
                 TextView hotHint = (TextView) convertView
                         .findViewById(R.id.recentHint);
                 hotHint.setText("热门城市");
@@ -544,76 +574,6 @@ public class AddressActivity extends AppCompatActivity implements AbsListView.On
         private class ViewHolder {
             TextView alpha; // 首字母标题
             TextView name; // 城市名字
-        }
-    }
-
-    class HotCityAdapter extends BaseAdapter {
-        private Context context;
-        private LayoutInflater inflater;
-        private List<City> hotCitys;
-
-        public HotCityAdapter(Context context, List<City> hotCitys) {
-            this.context = context;
-            inflater = LayoutInflater.from(this.context);
-            this.hotCitys = hotCitys;
-        }
-
-        @Override
-        public int getCount() {
-            return hotCitys.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = inflater.inflate(R.layout.item_city, null);
-            TextView city = (TextView) convertView.findViewById(R.id.city);
-            city.setText(hotCitys.get(position).getName());
-            return convertView;
-        }
-    }
-
-    class HitCityAdapter extends BaseAdapter {
-        private Context context;
-        private LayoutInflater inflater;
-        private List<String> hotCitys;
-
-        public HitCityAdapter(Context context, List<String> hotCitys) {
-            this.context = context;
-            inflater = LayoutInflater.from(this.context);
-            this.hotCitys = hotCitys;
-        }
-
-        @Override
-        public int getCount() {
-            return hotCitys.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = inflater.inflate(R.layout.item_city, null);
-            TextView city = (TextView) convertView.findViewById(R.id.city);
-            city.setText(hotCitys.get(position));
-            return convertView;
         }
     }
 

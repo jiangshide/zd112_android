@@ -20,12 +20,13 @@ import com.android.zd112.App;
 import com.android.zd112.R;
 import com.android.zd112.data.net.NetApi;
 import com.android.zd112.ui.view.DialogView;
+import com.android.zd112.ui.view.refresh.RefreshLoadLayout;
 
 /**
  * Created by etongdai on 2017/11/20.
  */
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener, DialogView.DialogViewListener {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener, DialogView.DialogViewListener, RefreshLoadLayout.OnRefreshListener {
 
     protected NetApi mNetApi;
     protected View mView;
@@ -176,4 +177,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onView(View view) {
     }
+
+    @Override
+    public void onRefresh() {
+    }
+
 }
