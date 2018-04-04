@@ -91,6 +91,20 @@
             android:layout_below="@id/sh"
             android:layout_marginRight="2dp"
             android:layout_marginTop="7dp" />
+        <TextView
+            android:id="@+id/overlay"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_lightblue_rectangle_corners"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="30.0sp"
+            android:alpha="0.8"
+            android:text="A"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

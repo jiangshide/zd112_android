@@ -3,16 +3,12 @@ package com.android.zd112.ui.activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.PixelFormat;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -30,6 +26,7 @@ import com.android.zd112.data.db.DBHelper;
 import com.android.zd112.data.db.DatabaseHelper;
 import com.android.zd112.ui.adapter.CommAdapter;
 import com.android.zd112.ui.view.MyLetterListView;
+import com.android.zd112.utils.Constant;
 import com.android.zd112.utils.FileUtils;
 import com.android.zd112.utils.LocationUtils;
 import com.android.zd112.utils.LogUtils;
@@ -58,7 +55,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     private OverlayThread overlayThread;
     private ArrayList<City> allCity_lists;
     private ArrayList<City> city_lists;
-    private ArrayList<City> city_hot;
     private ArrayList<City> city_result;
     private ArrayList<String> city_history;
     private EditText sh;
@@ -71,56 +67,20 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     private DatabaseHelper helper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_address);
-
-        personList = (ListView) findViewById(R.id.list_view);
-        allCity_lists = new ArrayList<City>();
-        city_hot = new ArrayList<City>();
-        city_result = new ArrayList<City>();
-        city_history = new ArrayList<String>();
-        resultList = (ListView) findViewById(R.id.search_result);
-        sh = (EditText) findViewById(R.id.sh);
-        tv_noresult = (TextView) findViewById(R.id.tv_noresult);
+        personList = viewId(R.id.list_view);
+        overlay = viewId(R.id.overlay);
+        resultList = viewId(R.id.search_result);
+        sh = viewId(R.id.sh);
+        tv_noresult = viewId(R.id.tv_noresult);
         helper = new DatabaseHelper(this);
-        sh.addTextChangedListener(new TextWatcher() {
+        letterListView = viewId(R.id.MyLetterListView01);
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                if (s.toString() == null || "".equals(s.toString())) {
-                    letterListView.setVisibility(View.VISIBLE);
-                    personList.setVisibility(View.VISIBLE);
-                    resultList.setVisibility(View.GONE);
-                    tv_noresult.setVisibility(View.GONE);
-                } else {
-                    city_result.clear();
-                    letterListView.setVisibility(View.GONE);
-                    personList.setVisibility(View.GONE);
-                    getResultCityList(s.toString());
-                    if (city_result.size() <= 0) {
-                        tv_noresult.setVisibility(View.VISIBLE);
-                        resultList.setVisibility(View.GONE);
-                    } else {
-                        tv_noresult.setVisibility(View.GONE);
-                        resultList.setVisibility(View.VISIBLE);
-                        resultListAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        letterListView = (MyLetterListView) findViewById(R.id.MyLetterListView01);
+    @Override
+    protected void setListener() {
+        sh.addTextChangedListener(this);
         letterListView.setLetter(getResStringArr(R.array.letter));
         letterListView
                 .setOnTouchingLetterChangedListener(new LetterListViewListener());
@@ -128,26 +88,14 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         handler = new Handler();
         overlayThread = new OverlayThread();
         isNeedFresh = true;
-        personList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                if (position >= 4) {
-
-                    Toast.makeText(getApplicationContext(),
-                            allCity_lists.get(position).getName(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        personList.setOnItemClickListener(this);
         locateProcess = 1;
         personList.setAdapter(adapter);
         personList.setOnScrollListener(this);
         resultList.setAdapter(resultListAdapter = new CommAdapter<City>(this, city_result, R.layout.list_item) {
             @Override
             protected void convertView(int position, View item, City city) {
-                ((TextView)get(item,R.id.name)).setText(city.name);
+                ((TextView) get(item, R.id.name)).setText(city.name);
             }
         });
         resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,22 +103,16 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        city_result.get(position).getName(), Toast.LENGTH_SHORT)
-                        .show();
+                show(city_result.get(position).getName());
             }
         });
-        initOverlay();
         cityInit();
-        hotCityInit();
         hisCityInit();
-        setAdapter(allCity_lists, city_hot, city_history);
+        setAdapter(allCity_lists, Constant.getHotCityArr(), city_history);
 
         LocationUtils.INSTANCE.setLocationListener(new LocationUtils.AmapLocationListener() {
             @Override
             public void onLocation(AMapLocation aMapLocation, Location location) {
-                LogUtils.e("----------aMapLocation:", aMapLocation);
-                LogUtils.e("-----------location:", location);
                 if (aMapLocation != null) {
                     if (!isNeedFresh) {
                         return;
@@ -194,30 +136,44 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected void setListener() {
-
-    }
-
-    @Override
     protected void processLogic(Bundle savedInstanceState) {
-
+        allCity_lists = new ArrayList<City>();
+        city_result = new ArrayList<City>();
+        city_history = new ArrayList<String>();
     }
 
-    public void InsertCity(String name) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from recentcity where name = '"
-                + name + "'", null);
-        if (cursor.getCount() > 0) { //
-            db.delete("recentcity", "name = ?", new String[]{name});
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        super.onTextChanged(s, start, before, count);
+        if (s.toString() == null || "".equals(s.toString())) {
+            letterListView.setVisibility(View.VISIBLE);
+            personList.setVisibility(View.VISIBLE);
+            resultList.setVisibility(View.GONE);
+            tv_noresult.setVisibility(View.GONE);
+        } else {
+            city_result.clear();
+            letterListView.setVisibility(View.GONE);
+            personList.setVisibility(View.GONE);
+            getResultCityList(s.toString());
+            if (city_result.size() <= 0) {
+                tv_noresult.setVisibility(View.VISIBLE);
+                resultList.setVisibility(View.GONE);
+            } else {
+                tv_noresult.setVisibility(View.GONE);
+                resultList.setVisibility(View.VISIBLE);
+                resultListAdapter.notifyDataSetChanged();
+            }
         }
-        db.execSQL("insert into recentcity(name, date) values('" + name + "', "
-                + System.currentTimeMillis() + ")");
-        db.close();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+        if (position >= 4) {
+            Toast.makeText(getApplicationContext(),
+                    allCity_lists.get(position).getName(),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void cityInit() {
@@ -231,34 +187,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         allCity_lists.add(city);
         city_lists = getCityList();
         allCity_lists.addAll(city_lists);
-    }
-
-    /**
-     * 热门城市
-     */
-    public void hotCityInit() {
-        City city = new City("上海", "2");
-        city_hot.add(city);
-        city = new City("北京", "2");
-        city_hot.add(city);
-        city = new City("广州", "2");
-        city_hot.add(city);
-        city = new City("深圳", "2");
-        city_hot.add(city);
-        city = new City("武汉", "2");
-        city_hot.add(city);
-        city = new City("天津", "2");
-        city_hot.add(city);
-        city = new City("西安", "2");
-        city_hot.add(city);
-        city = new City("南京", "2");
-        city_hot.add(city);
-        city = new City("杭州", "2");
-        city_hot.add(city);
-        city = new City("成都", "2");
-        city_hot.add(city);
-        city = new City("重庆", "2");
-        city_hot.add(city);
     }
 
     private void hisCityInit() {
@@ -343,51 +271,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         adapter = new ListAdapter(this, list, hotList, hisCity);
         personList.setAdapter(adapter);
     }
-
-//    private class ResultListAdapter extends BaseAdapter {
-//        private LayoutInflater inflater;
-//        private ArrayList<City> results = new ArrayList<City>();
-//
-//        public ResultListAdapter(Context context, ArrayList<City> results) {
-//            inflater = LayoutInflater.from(context);
-//            this.results = results;
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return results.size();
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return position;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return position;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            ViewHolder viewHolder = null;
-//            if (convertView == null) {
-//                convertView = inflater.inflate(R.layout.list_item, null);
-//                viewHolder = new ViewHolder();
-//                viewHolder.name = (TextView) convertView
-//                        .findViewById(R.id.name);
-//                convertView.setTag(viewHolder);
-//            } else {
-//                viewHolder = (ViewHolder) convertView.getTag();
-//            }
-//            viewHolder.name.setText(results.get(position).getName());
-//            return convertView;
-//        }
-//
-//        class ViewHolder {
-//            TextView name;
-//        }
-//    }
 
     public class ListAdapter extends BaseAdapter {
         private Context context;
@@ -527,7 +410,7 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
                                             int position, long id) {
 
                         Toast.makeText(getApplicationContext(),
-                                city_hot.get(position).getName(),
+                                Constant.getHotCityArr().get(position).getName(),
                                 Toast.LENGTH_SHORT).show();
 
                     }
@@ -579,28 +462,10 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
 
     private boolean mReady;
 
-    // 初始化汉语拼音首字母弹出提示框
-    private void initOverlay() {
-        mReady = true;
-        LayoutInflater inflater = LayoutInflater.from(this);
-        overlay = (TextView) inflater.inflate(R.layout.overlay, null);
-        overlay.setVisibility(View.INVISIBLE);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                PixelFormat.TRANSLUCENT);
-        WindowManager windowManager = (WindowManager) this
-                .getSystemService(Context.WINDOW_SERVICE);
-        windowManager.addView(overlay, lp);
-    }
-
     private boolean isScroll = false;
 
     private class LetterListViewListener implements
             MyLetterListView.OnTouchingLetterChangedListener {
-
         @Override
         public void onTouchingLetterChanged(final String s) {
             isScroll = false;
@@ -664,7 +529,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         if (!isScroll) {
             return;
         }
-
         if (mReady) {
             String text;
             String name = allCity_lists.get(firstVisibleItem).getName();

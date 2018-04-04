@@ -6,9 +6,12 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +26,7 @@ import com.android.zd112.ui.view.DialogView;
  * Created by etongdai on 2018/1/22.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener,DialogView.DialogViewListener {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener,DialogView.DialogViewListener,TextWatcher,AdapterView.OnItemClickListener {
 
     protected NetApi mNetApi;
     protected View mView;
@@ -143,6 +146,26 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onView(View view) {
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
     protected abstract void initView(Bundle savedInstanceState);
