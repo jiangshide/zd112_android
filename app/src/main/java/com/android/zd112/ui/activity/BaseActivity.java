@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.android.zd112.App;
 import com.android.zd112.R;
+import com.android.zd112.data.db.DBHelper;
+import com.android.zd112.data.db.DatabaseHelper;
 import com.android.zd112.data.net.NetApi;
 import com.android.zd112.ui.view.DialogView;
 
@@ -35,6 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected final int LOADING_FINISH = 2;
     protected final int LOADING_RETRY = 3;
     protected DialogView mDialogView;
+    protected DatabaseHelper mDbHelper;
+    protected DBHelper mDbhelpers;
 
     protected <VT extends View> VT viewId(@IdRes int id) {
         return (VT) mView.findViewById(id);
@@ -43,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDbHelper = new DatabaseHelper(this);
         mNetApi = App.getInstance().getmNetApi();
         if (mView == null) {
             initView(savedInstanceState);

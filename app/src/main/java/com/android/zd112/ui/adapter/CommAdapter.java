@@ -17,12 +17,32 @@ import java.util.List;
 public abstract class CommAdapter<T> extends BaseAdapter {
     private Context mContext;
     private List<T> mData;
-    private int mLayoutId;
+    private int mLayoutId, index, count;
 
     public CommAdapter(Context context, List<T> data, int layoutId) {
         this.mContext = context;
         this.mData = data;
         this.mLayoutId = layoutId;
+    }
+
+    public CommAdapter<T> setViewTypeCount(int count) {
+        this.count = count;
+        return this;
+    }
+
+    public CommAdapter<T> setItemViewType(int index) {
+        this.index = index;
+        return this;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return count > 0 ? count : super.getViewTypeCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return index > 0 ? position < index ? position : index : super.getItemViewType(position);
     }
 
     @Override
@@ -46,7 +66,7 @@ public abstract class CommAdapter<T> extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(mLayoutId, null);
         }
         T t = getItem(position);
-        convertView(position,convertView, t);
+        convertView(position, convertView, t);
         return convertView;
     }
 

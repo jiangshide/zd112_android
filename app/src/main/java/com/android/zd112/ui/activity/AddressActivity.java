@@ -23,7 +23,6 @@ import com.amap.api.location.AMapLocation;
 import com.android.zd112.R;
 import com.android.zd112.data.City;
 import com.android.zd112.data.db.DBHelper;
-import com.android.zd112.data.db.DatabaseHelper;
 import com.android.zd112.ui.adapter.CommAdapter;
 import com.android.zd112.ui.view.MyLetterListView;
 import com.android.zd112.utils.Constant;
@@ -41,12 +40,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class AddressActivity extends BaseActivity implements AbsListView.OnScrollListener {
+public class AddressActivity extends BaseActivity implements AbsListView.OnScrollListener, MyLetterListView.OnTouchingLetterChangedListener {
 
     private BaseAdapter adapter;
     private CommAdapter<City> resultListAdapter;
-    private ListView personList;
-    private ListView resultList;
+    private ListView personList, resultList;
     private TextView overlay;
     private MyLetterListView letterListView; // A-Z listview
     private HashMap<String, Integer> alphaIndexer;
@@ -57,59 +55,75 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     private ArrayList<City> city_lists;
     private ArrayList<City> city_result;
     private ArrayList<String> city_history;
-    private EditText sh;
+    private EditText searchEdit;
     private TextView tv_noresult;
 
     private String currentCity;
     private int locateProcess = 1;
     private boolean isNeedFresh;
 
-    private DatabaseHelper helper;
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_address);
-        personList = viewId(R.id.list_view);
-        overlay = viewId(R.id.overlay);
-        resultList = viewId(R.id.search_result);
-        sh = viewId(R.id.sh);
-        tv_noresult = viewId(R.id.tv_noresult);
-        helper = new DatabaseHelper(this);
-        letterListView = viewId(R.id.MyLetterListView01);
+        personList = findViewById(R.id.list_view);
+        overlay = findViewById(R.id.overlay);
+        resultList = findViewById(R.id.search_result);
+        searchEdit = findViewById(R.id.searchEdit);
+        tv_noresult = findViewById(R.id.tv_noresult);
+        letterListView = findViewById(R.id.MyLetterListView01);
     }
 
     @Override
     protected void setListener() {
-        sh.addTextChangedListener(this);
-        letterListView.setLetter(getResStringArr(R.array.letter));
+        searchEdit.addTextChangedListener(this);
         letterListView
-                .setOnTouchingLetterChangedListener(new LetterListViewListener());
+                .setOnTouchingLetterChangedListener(this);
+        personList.setOnItemClickListener(this);
+        personList.setOnScrollListener(this);
+        resultList.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+        letterListView.setLetter(getResStringArr(R.array.letter));
+        allCity_lists = new ArrayList<City>();
+        city_result = new ArrayList<City>();
+        city_history = new ArrayList<String>();
         alphaIndexer = new HashMap<String, Integer>();
         handler = new Handler();
         overlayThread = new OverlayThread();
         isNeedFresh = true;
-        personList.setOnItemClickListener(this);
         locateProcess = 1;
-        personList.setAdapter(adapter);
-        personList.setOnScrollListener(this);
         resultList.setAdapter(resultListAdapter = new CommAdapter<City>(this, city_result, R.layout.list_item) {
             @Override
             protected void convertView(int position, View item, City city) {
                 ((TextView) get(item, R.id.name)).setText(city.name);
             }
         });
-        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                show(city_result.get(position).getName());
-            }
-        });
         cityInit();
-        hisCityInit();
-        setAdapter(allCity_lists, Constant.getHotCityArr(), city_history);
+//        hisCityInit();
 
+        alphaIndexer = new HashMap<String, Integer>();
+        sections = new String[allCity_lists.size()];
+        for (int i = 0; i < allCity_lists.size(); i++) {
+            // 当前汉语拼音首字母
+            String currentStr = getAlpha(allCity_lists.get(i).getPinyi());
+            // 上一个汉语拼音首字母，如果不存在为" "
+            String previewStr = (i - 1) >= 0 ? getAlpha(allCity_lists.get(i - 1)
+                    .getPinyi()) : " ";
+            if (!previewStr.equals(currentStr)) {
+                String name = getAlpha(allCity_lists.get(i).getPinyi());
+                alphaIndexer.put(name, i);
+                sections[i] = name;
+            }
+        }
+//        personList.setAdapter(adapter = new ListAdapter(this, allCity_lists, Constant.getHotCityArr(), city_history));
+        personList.setAdapter(adapter = new CommAdapter<City>(this,allCity_lists,R.layout.frist_list_item) {
+            @Override
+            protected void convertView(int position, View item, City city) {
+
+            }
+        }.setViewTypeCount(5).setItemViewType(4));
         LocationUtils.INSTANCE.setLocationListener(new LocationUtils.AmapLocationListener() {
             @Override
             public void onLocation(AMapLocation aMapLocation, Location location) {
@@ -133,13 +147,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
                 }
             }
         });
-    }
-
-    @Override
-    protected void processLogic(Bundle savedInstanceState) {
-        allCity_lists = new ArrayList<City>();
-        city_result = new ArrayList<City>();
-        city_history = new ArrayList<String>();
     }
 
     @Override
@@ -169,10 +176,15 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
-        if (position >= 4) {
-            Toast.makeText(getApplicationContext(),
-                    allCity_lists.get(position).getName(),
-                    Toast.LENGTH_SHORT).show();
+        switch (parent.getId()) {
+            case R.id.search_result:
+                show("parent:" + parent.getId() + " | " + city_result.get(position).getName());
+                break;
+            case R.id.list_view:
+                if (position >= 4) {
+                    show(allCity_lists.get(position).getName());
+                }
+                break;
         }
     }
 
@@ -189,21 +201,20 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         allCity_lists.addAll(city_lists);
     }
 
-    private void hisCityInit() {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "select * from recentcity order by date desc limit 0, 3", null);
-        while (cursor.moveToNext()) {
-            city_history.add(cursor.getString(1));
-        }
-        cursor.close();
-        db.close();
-    }
+//    private void hisCityInit() {
+//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(
+//                "select * from recentcity order by date desc limit 0, 3", null);
+//        while (cursor.moveToNext()) {
+//            city_history.add(cursor.getString(1));
+//        }
+//        cursor.close();
+//        db.close();
+//    }
 
-    @SuppressWarnings("unchecked")
     private ArrayList<City> getCityList() {
-        DBHelper dbHelper = new DBHelper(this);
         ArrayList<City> list = new ArrayList<City>();
+        DBHelper dbHelper = new DBHelper(this);
         try {
             dbHelper.createDataBase();
             SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -225,10 +236,9 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     private void getResultCityList(String keyword) {
-        DBHelper dbHelper = new DBHelper(this);
         try {
+            DBHelper dbHelper = new DBHelper(this);
             dbHelper.createDataBase();
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             Cursor cursor = db.rawQuery(
@@ -266,10 +276,18 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
         }
     };
 
-    private void setAdapter(List<City> list, List<City> hotList,
-                            List<String> hisCity) {
-        adapter = new ListAdapter(this, list, hotList, hisCity);
-        personList.setAdapter(adapter);
+    @Override
+    public void onTouchingLetterChanged(String s) {
+        isScroll = false;
+        if (alphaIndexer.get(s) != null) {
+            int position = alphaIndexer.get(s);
+            personList.setSelection(position);
+            overlay.setText(s);
+            overlay.setVisibility(View.VISIBLE);
+            handler.removeCallbacks(overlayThread);
+            // 延迟一秒后执行，让overlay为不可见
+            handler.postDelayed(overlayThread, 1000);
+        }
     }
 
     public class ListAdapter extends BaseAdapter {
@@ -463,23 +481,6 @@ public class AddressActivity extends BaseActivity implements AbsListView.OnScrol
     private boolean mReady;
 
     private boolean isScroll = false;
-
-    private class LetterListViewListener implements
-            MyLetterListView.OnTouchingLetterChangedListener {
-        @Override
-        public void onTouchingLetterChanged(final String s) {
-            isScroll = false;
-            if (alphaIndexer.get(s) != null) {
-                int position = alphaIndexer.get(s);
-                personList.setSelection(position);
-                overlay.setText(s);
-                overlay.setVisibility(View.VISIBLE);
-                handler.removeCallbacks(overlayThread);
-                // 延迟一秒后执行，让overlay为不可见
-                handler.postDelayed(overlayThread, 1000);
-            }
-        }
-    }
 
     // 设置overlay不可见
     private class OverlayThread implements Runnable {
